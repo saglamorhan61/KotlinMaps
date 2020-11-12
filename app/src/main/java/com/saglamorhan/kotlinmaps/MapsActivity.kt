@@ -3,6 +3,7 @@ package com.saglamorhan.kotlinmaps
 import android.Manifest
 import android.content.Context
 import android.content.pm.PackageManager
+import android.location.Geocoder
 import android.location.Location
 import android.location.LocationListener
 import android.location.LocationManager
@@ -17,6 +18,8 @@ import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.MarkerOptions
+import java.lang.Exception
+import java.util.*
 
 class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
 
@@ -54,6 +57,23 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
                     val userLocation = LatLng(location.latitude,location.longitude)
                     mMap.addMarker(MarkerOptions().position(userLocation).title("Your Location"))
                     mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(userLocation,15f))
+
+                    // Bu konumun adresini almak
+                    val geocoder = Geocoder(this@MapsActivity, Locale.getDefault())
+
+                    try {
+
+                        val addressList = geocoder.getFromLocation(location.latitude,location.longitude,1)
+                        if (addressList!=null && addressList.size>0){
+                            println(addressList.get(0).toString())
+                        }
+
+
+                    }catch (e: Exception){
+                        e.printStackTrace()
+                    }
+
+
                 }
 
 
