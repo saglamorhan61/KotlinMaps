@@ -1,11 +1,15 @@
 package com.saglamorhan.kotlinmaps
 
+import android.Manifest
 import android.content.Context
+import android.content.pm.PackageManager
 import android.location.Location
 import android.location.LocationListener
 import android.location.LocationManager
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import androidx.core.app.ActivityCompat
+import androidx.core.content.ContextCompat
 
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
@@ -45,6 +49,8 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
         locationListener = object : LocationListener{
             override fun onLocationChanged(location: Location?) {
 
+
+
             }
 
             override fun onStatusChanged(provider: String?, status: Int, extras: Bundle?) {
@@ -58,6 +64,14 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
             override fun onProviderDisabled(provider: String?) {
 
             }
+
+        }
+        //izin kontrolu yapiliyor
+        if (ContextCompat.checkSelfPermission(this,Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED){
+            //izin verilmemisse yapilacaklar
+            ActivityCompat.requestPermissions(this, arrayOf(Manifest.permission.ACCESS_FINE_LOCATION),1)
+
+        }else{
 
         }
 
