@@ -49,6 +49,12 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
         locationListener = object : LocationListener{
             override fun onLocationChanged(location: Location?) {
 
+                if (location != null){
+                    mMap.clear()
+                    val userLocation = LatLng(location.latitude,location.longitude)
+                    mMap.addMarker(MarkerOptions().position(userLocation).title("Your Location"))
+                    mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(userLocation,15f))
+                }
 
 
             }
@@ -72,9 +78,35 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
             ActivityCompat.requestPermissions(this, arrayOf(Manifest.permission.ACCESS_FINE_LOCATION),1)
 
         }else{
+            locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER,1,1f,locationListener)
+        }
+
+
+    }
+    // Kullanicidan bi izin istedikten sonra kullanicinin cevabini verir.
+    override fun onRequestPermissionsResult(
+        requestCode: Int,
+        permissions: Array<out String>,
+        grantResults: IntArray
+    ) {
+
+
+        if (requestCode == 1){
+            if (grantResults.isNotEmpty()){
+                if (ContextCompat.checkSelfPermission(this,Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED){
+                    //izin verilmisse yapilacaklar
+                    //Kullanicinin konumunu almak
+                    //burasi kullanici izni ilk verdiginde calisir
+                    locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER,1,1f,locationListener)
+
+                }
+
+            }
 
         }
 
 
+
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
     }
 }
