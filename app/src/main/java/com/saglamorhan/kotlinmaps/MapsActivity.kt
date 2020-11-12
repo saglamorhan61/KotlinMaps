@@ -38,6 +38,6 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
         // Add a marker in Sydney and move the camera
         val kahta = LatLng(37.790578, 38.615157)
         mMap.addMarker(MarkerOptions().position(kahta).title("Marker in Kahta"))
-        mMap.moveCamera(CameraUpdateFactory.newLatLng(kahta))
+        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(kahta,15f))
     }
 }
