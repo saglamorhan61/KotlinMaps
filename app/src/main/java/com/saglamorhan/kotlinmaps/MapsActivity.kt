@@ -79,6 +79,13 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
 
         }else{
             locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER,1,1f,locationListener)
+            // Izin verilmisse ve location degismemisse var olan son location i haritada gostermek
+            val lastLocation = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER)
+            if (lastLocation != null){
+                val lastKnownLatLng = LatLng(lastLocation.latitude,lastLocation.longitude)
+                mMap.addMarker(MarkerOptions().position(lastKnownLatLng).title("Your Location"))
+                mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(lastKnownLatLng,15f))
+            }
         }
 
 
@@ -104,9 +111,10 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
             }
 
         }
-
-
-
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
     }
+
+
+
+
 }
